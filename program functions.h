@@ -337,6 +337,88 @@ void password_registration (){
 
 }
 
+// change_password() is responsible for changing the user password if the user had personal information on the system database
+void change_password() {
+
+    auto wks = doc.workbook().worksheet("Sheet1");
+    int cell_number_of_new_pasword;
+
+
+    string current_password, new_password, password_check;
+
+
+    login();
+
+    cout << "please enter the current password:- ";
+    getline(cin, current_password);
+
+    // checks if the password was not existed in the system database
+    while (true) {
+
+        if (password_cellColumn_map[current_password] == 0) {
+            cout << "Wrong password :(\n"
+                "please enter the current password:- ";
+            getline(cin, current_password);
+        }
+        else {
+            break;
+        }
+    }
+
+    cout << "characteristics of strong password :\n" << "1- it should be at least 12 characters.\n"
+        << "2-it should have lower and upper case letters\n" << "3-it should be formed from letters and number\ns"
+        << "4-it should not have spaces or special characters\n";
+
+    cout << "please enter your new password:-  ";
+
+    getline(cin, new_password);
+
+    //checking for all the strong passwords rules
+    while (true) {
+        if (new_password.find_first_of("abcdefghijklmnopqrstuvwxyz") != string::npos and
+            new_password.find_first_of("0123456789") != string::npos and
+            new_password.find_first_of("ABCDEFGHIJKLMNOPQRSTUVWXYZ") != string::npos and new_password.length() > 12) {
+            break;
+
+        }
+        else {
+            cout << "your password should just have at least 1 lowercase, 1 uppercase, 1 digit in it\n"
+                "and it should be more than 12 letters\n"
+                "please enter a valid password:  ";
+            getline(cin, new_password);
+        }
+    }
+
+
+
+    cout << "please enter your password again for verification:-  ";
+    getline(cin, password_check);
+
+
+    //  checking for the new password verification
+    while (password_check != new_password) {
+        cout << " wrong password they are not the same :(\n"
+            "please enter your password again for verification:-  ";
+        getline(cin, password_check);
+    }
+
+
+    username_password_map[userInfotake.username] = new_password;
+    cell_number_of_new_pasword = password_cellColumn_map[current_password];
+    password_cellColumn_map.erase(current_password);
+    password_cellColumn_map[new_password] = cell_number_of_new_pasword;
+
+    // for password encryption before storing in the database file
+    for (int i = 0; i < new_password.length();i++) {
+
+        new_password[i] += 1;
+    }
+    auto cell2 = wks.cell(password_cellColumn_map[current_password], 4);
+    cell2.value() = new_password;
+}
+
+
+
 // login is responsible for the login function
 void login(){
 
