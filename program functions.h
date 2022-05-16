@@ -419,54 +419,10 @@ void change_password() {
 
 
 
-// login is responsible for the login function
-void login(){
 
 
-    int counter = 0,test = 0;
 
 
-    cout << "please enter your id to log in :-  ";
-    getline(cin ,userInfotake.username);
-
-    cout << "please enter your password to log in:-  ";
-    getline(cin, userInfotake.password);
-
-    // checking for just three times if the user entered an incorrect data then it prevents the user from the login in
-    while(true){
-
-        // checks if this username and this password stored in the system database or not
-        if (username_password_map[userInfotake.username] != 0 and password_cellColumn_map[userInfotake.password] != 0  ){
-            test += 1;
-        }
-
-        //if the test that checks if this username and this password stored in the system database succeed then login success
-        if(test > 0){
-            cout << "Login success"<< " Welcome :) " + userInfotake.username;
-            break;
-        }
-
-        // if the test failed then login failed
-        else if( test==0 ){
-            cout << " :( log in failed Wrong id or password please try again\n";
-
-            cout << "please enter your username:-  ";
-            getline(cin ,userInfotake.username);
-
-            cout << "please enter your password:-  ";
-            getline(cin, userInfotake.password);
-            counter+=1;
-        }
-
-        // checks if the user entered an incorrect data for three times or not and if so it prevents the user from the log in
-        if(counter == 2){
-            cout << "\nAccess denied :(";
-            break;
-        }
-    }
-
-
-}
 
 
 
